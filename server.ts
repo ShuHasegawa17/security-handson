@@ -11,13 +11,7 @@ app.use(express.json()) // ルート設定前にこれがないとbodyが空に�
 app.use('/api', api)
 
 app.get('/', (req, res, next) => {
-  const param = req.query.message
-  if (!param) {
-    res.status(400)
-    res.send('error')
-    return
-  }
-  res.send(param)
+  res.end('TOP PAGE')
 })
 
 app.listen(port, () => {
