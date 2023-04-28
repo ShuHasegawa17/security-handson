@@ -3,6 +3,7 @@ import crypto from 'crypto'
 import express from 'express'
 
 import { router as api } from './routes/api'
+import { router as csrf } from './routes/csrf'
 const app = express()
 const port = 3000
 
@@ -13,6 +14,7 @@ app.use(express.static('public'))
 
 app.use(express.json()) // ルート設定前にこれがないとbodyが空になる
 app.use('/api', api)
+app.use('/csrf', csrf)
 
 app.get('/', (req, res, next) => {
   res.end('TOP PAGE')
