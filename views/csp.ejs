@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- noce属性の読み込み-->
+    <script nonce="<%= nonce %>">
+      if (window.trustedTypes && trustedTypes.createPolicy) {
+        const policy = trustedTypes.createPolicy('script-url', {
+          createScriptURL: (str) => {
+            const url = new URL(str, location.origin)
+            if (url.origin !== location.origin) {
+              throw new Error('cross origin は許可しない')
+            }
+            return url
+          },
+        })
+        //alert('Hello CSP!')
+        const script = document.createElement('script')
+        //script.src = './csp-test.js'
+        // script.src = policy.createScriptURL('./csp-test.js')
+        script.src = policy.createScriptURL(
+          'http://site.example:3000/csp-test.js'
+        )
+        document.body.appendChild(script)
+      }
+    </script>
+  </body>
+</html>

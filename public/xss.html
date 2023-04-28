@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XSS</title>
+    <script src="./purify.min.js"></script>
+    <body>
+      <h1>XSS検証用ページ</h1>
+      <div id="result"></div>
+      <a id="link" href="#">リンクをクリック</a>
+      <script>
+        const url = new URL(location.href)
+        const message = url.searchParams.get('message')
+        if (message) {
+          // document.querySelector('#result').innerHTML = message //NG
+          // document.querySelector('#result').textContent = message //OK
+          const sanitizedMessage = DOMPurify.sanitize(message)
+          document.querySelector('#result').innerHTML = sanitizedMessage
+        }
+
+        const urlStr = url.searchParams.get('url')
+        if (urlStr) {
+          const linkUrl = new URL(urlStr, url.origin)
+          if (linkUrl.protocol === 'http:' || linkUrl.protocol === 'https:') {
+            document.querySelector('#link').href = linkUrl
+          } else {
+            console.log('httpまたはhttps以外のプロトコルが指定されています。')
+          }
+        }
+      </script>
+    </body>
+  </head>
+  <body></body>
+</html>
