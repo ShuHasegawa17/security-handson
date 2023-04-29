@@ -1,6 +1,7 @@
 // ランダム文字列の生成
 import crypto from 'crypto'
 import express from 'express'
+import helmet from 'helmet'
 
 import { router as api } from './routes/api'
 import { router as csrf } from './routes/csrf'
@@ -9,9 +10,10 @@ const port = 3000
 
 app.set('view engine', 'ejs')
 
+app.use(helmet.frameguard({ action: 'sameorigin' }))
+
 // ルートアクセスで、publi内cの静的ファイルが表示される
 app.use(express.static('public'))
-
 app.use(express.json()) // ルート設定前にこれがないとbodyが空になる
 app.use('/api', api)
 app.use('/csrf', csrf)
