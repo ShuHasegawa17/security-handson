@@ -36,6 +36,14 @@ app.get('/csp', (req, res) => {
   res.render('csp', { nonce: nonceValue })
 })
 
+//フォームの内容を解析してreq.bodyへ格納
+app.use(express.urlencoded({ extended: true }))
+
+app.post('/signup', (req, res) => {
+  console.log(req.body)
+  res.send('アカウント登録しました。')
+})
+
 app.listen(port, () => {
   console.log(`server is runnning on http://localhost:${port}`)
 })
